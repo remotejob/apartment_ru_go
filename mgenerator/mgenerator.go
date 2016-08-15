@@ -69,7 +69,7 @@ func Generate( book []byte) string{
 	prefixLen := 1
 
 	// Seed the random number generator.
-	numWords := gen.Random(500, 1500)
+	numWords := gen.Random(1000, 2000)
 
 	c := NewChain(prefixLen)
 
