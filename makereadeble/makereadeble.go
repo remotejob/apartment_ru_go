@@ -1,8 +1,6 @@
 package makereadeble
 
 import (
-	//	"fmt"
-
 	"math/rand"
 	"strings"
 	"time"
@@ -10,14 +8,6 @@ import (
 	"github.com/remotejob/comutils/gen"
 	"github.com/remotejob/comutils/str"
 )
-
-// "math/rand"
-// "os"
-// "time"
-
-// "github.com/remotejob/apartment_ru_go/dbhandler"
-// "github.com/shogo82148/go-shuffle"
-// "gopkg.in/mgo.v2"
 
 func Makehuman(mtext string) (string, string, string) {
 
@@ -78,6 +68,6 @@ func Makehuman(mtext string) (string, string, string) {
 
 	}
 
-	return title, contents, mcontents
+	return title, strings.TrimSpace(contents), strings.TrimSpace(mcontents)
 
 }

@@ -3,6 +3,7 @@ package entryHandler
 import (
 	"github.com/Pallinder/go-randomdata"
 	"github.com/gosimple/slug"
+	"github.com/remotejob/apartment_ru_go/makereadeble"
 	"github.com/remotejob/apartment_ru_go/mgenerator"
 	"github.com/remotejob/comutils/gen"
 	"github.com/remotejob/comutils/str"
@@ -14,14 +15,12 @@ import (
 	"log"
 	"strings"
 	"time"
-
-	"github.com/remotejob/apartment_ru_go/savetags"
 )
 
 type Article struct {
-	Title     string
-	Stitle    string
-	Tags      string
+	Title  string
+	Stitle string
+	// Tags      string
 	Contents  string
 	Mcontents string
 	Site      string
@@ -53,49 +52,37 @@ func (article *Entryarticle) AddTitleStitleMcontents(bfile []byte, sites []strin
 
 	mtext := mgenerator.Generate(bfile)
 
-	mtexttokens := strings.Fields(mtext)
-
-	var title string = ""
-
-	for i, token := range mtexttokens {
-
-		title = title + " " + token
-		if i >= 10 {
-			break
-		}
-
-	}
-	
-
+	title, contents, mcontents := makereadeble.Makehuman(mtext)
 
 	stitle := slug.Make(title)
 	article.Modarticle.Title = str.UpcaseInitial(title)
-	article.Modarticle.Stitle = slug.Make(title)
-	article.Modarticle.Mcontents = mtext
+	article.Modarticle.Stitle = stitle
+	article.Modarticle.Contents = contents
+	article.Modarticle.Mcontents = mcontents
 	article.Modarticle.Site = sites[siteid]
 
 	return stitle
 
 }
 
-func (article *Entryarticle) AddTags(tags []string) {
+// func (article *Entryarticle) AddTags(tags []string) {
 
-	var tagsquant = len(tags)
-	var tags_str string = ""
-	var tags_to_save []string
-	for i := 0; i < 10; i++ {
+// 	var tagsquant = len(tags)
+// 	var tags_str string = ""
+// 	var tags_to_save []string
+// 	for i := 0; i < 10; i++ {
 
-		tagint := gen.Random(0, tagsquant)
-		tags_to_save = append(tags_to_save, tags[tagint])
-		tags_str = tags_str + " " + tags[tagint]
+// 		tagint := gen.Random(0, tagsquant)
+// 		tags_to_save = append(tags_to_save, tags[tagint])
+// 		tags_str = tags_str + " " + tags[tagint]
 
-	}
+// 	}
 
-	savetags.Saveinfile("createdtags.csv", tags_to_save)
+// 	savetags.Saveinfile("createdtags.csv", tags_to_save)
 
-	article.Modarticle.Tags = strings.TrimSpace(tags_str)
+// 	article.Modarticle.Tags = strings.TrimSpace(tags_str)
 
-}
+// }
 
 func (article *Entryarticle) AddContents(sentenses []string) {
 
@@ -114,11 +101,11 @@ func (article *Entryarticle) AddContents(sentenses []string) {
 func (article *Entryarticle) InsertIntoDB(session mgo.Session) {
 
 	now := time.Now()
-	articletodb := Article{article.Modarticle.Title, article.Modarticle.Stitle, article.Modarticle.Tags, article.Modarticle.Contents, article.Modarticle.Mcontents, article.Modarticle.Site, article.Modarticle.Author, now, now}
+	articletodb := Article{article.Modarticle.Title, article.Modarticle.Stitle, article.Modarticle.Contents, article.Modarticle.Mcontents, article.Modarticle.Site, article.Modarticle.Author, now, now}
 	//	dbhandler.InsetArticle(session, articletodb)
 	session.SetMode(mgo.Monotonic, true)
 
-	c := session.DB("jbs_generator").C("jbs_generator")
+	c := session.DB("blog").C("articles")
 
 	err := c.Insert(articletodb)
 	if err != nil {

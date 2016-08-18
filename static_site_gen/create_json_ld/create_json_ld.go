@@ -2,9 +2,10 @@ package create_json_ld
 
 import (
 	"encoding/json"
-	"github.com/kazarena/json-gold/ld"
-	"github.com/remotejob/jbs_generator/domains"
 	"log"
+
+	"github.com/kazarena/json-gold/ld"
+	"github.com/remotejob/apartment_ru_go/domains"
 )
 
 func Create(proc *ld.JsonLdProcessor, options *ld.JsonLdOptions, articlefull domains.Articlefull) []byte {
@@ -28,11 +29,11 @@ func Create(proc *ld.JsonLdProcessor, options *ld.JsonLdOptions, articlefull dom
 		"datepublished":    createdstr,
 		"datemodified":     updatedstr,
 		"mainEntityOfPage": mainEntityOfPage,
-		"keywords":         articlefull.Tags,
-		"url":              pagelink,
+		// "keywords":         articlefull.Tags,
+		"url": pagelink,
 		//		"description":         "We love to do stuff to help people and stuff",
-		"articleSection": "remote job",
-		"articleBody": articlefull.Contents,
+		"articleSection": "realestate",
+		"articleBody":    articlefull.Contents,
 	}
 
 	comp, err := proc.Compact(doc, nil, options)

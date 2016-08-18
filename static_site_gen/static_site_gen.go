@@ -19,6 +19,9 @@ import (
 	"time"
 )
 
+var themes string
+var locale string
+
 var addrs []string
 var database string
 var username string
@@ -43,6 +46,9 @@ func init() {
 		log.Fatalln(err.Error())
 
 	} else {
+
+		themes = cfg.General.Themes
+		locale = cfg.General.Locale
 
 		addrs = cfg.Dbmgo.Addrs
 		database = cfg.Dbmgo.Database
@@ -108,7 +114,7 @@ func main() {
 
 	for _, articlefull := range allarticles {
 
-		articleobj := domains.Article{articlefull.Title, articlefull.Tags, articlefull.Contents, articlefull.Mcontents, articlefull.Author}
+		articleobj := domains.Article{articlefull.Title, articlefull.Contents, articlefull.Mcontents, articlefull.Author}
 
 		createdstr := articlefull.Created.Format("2006-01-02")
 		updatedstr := articlefull.Updated.Format("2006-01-02")
@@ -116,9 +122,9 @@ func main() {
 		jsonld := create_json_ld.Create(proc, options, articlefull)
 
 		articletotemplate := domains.Articletotempalte{
-			Title:     articlefull.Title,
-			Stitle:    articlefull.Stitle,
-			Tags:      articlefull.Tags,
+			Title:  articlefull.Title,
+			Stitle: articlefull.Stitle,
+			// Tags:      articlefull.Tags,
 			Contents:  articlefull.Contents,
 			Mcontents: articlefull.Mcontents,
 			Site:      articlefull.Site,
@@ -129,9 +135,9 @@ func main() {
 
 		articlejson, _ := json.Marshal(articleobj)
 
-		dirstr := path.Join(pwd, "www", articlefull.Site, mainroute)
-		filestr := path.Join(pwd, "www", articlefull.Site, mainroute, articlefull.Stitle+".html")
-		filestrjson := path.Join(pwd, "www", articlefull.Site, mainroute, articlefull.Stitle+".json")
+		dirstr := path.Join(pwd, "www", articlefull.Site, themes, locale, mainroute)
+		filestr := path.Join(pwd, "www", articlefull.Site, themes, locale, mainroute, articlefull.Stitle+".html")
+		filestrjson := path.Join(pwd, "www", articlefull.Site, themes, locale, mainroute, articlefull.Stitle+".json")
 		os.MkdirAll(dirstr, 0777)
 
 		f, err := os.Create(filestr)

@@ -3,14 +3,18 @@ package main
 import (
 	"encoding/xml"
 	"fmt"
-	"github.com/remotejob/jbs_generator/dbhandler"
-	"github.com/remotejob/jbs_generator/domains"
-	"gopkg.in/gcfg.v1"
-	"gopkg.in/mgo.v2"
 	"io/ioutil"
 	"log"
 	"time"
+
+	"github.com/remotejob/apartment_ru_go/dbhandler"
+	"github.com/remotejob/apartment_ru_go/domains"
+	"gopkg.in/gcfg.v1"
+	"gopkg.in/mgo.v2"
 )
+
+var themes string
+var locale string
 
 var addrs []string
 var database string
@@ -29,6 +33,9 @@ func init() {
 		log.Fatalln(err.Error())
 
 	} else {
+
+		themes = cfg.General.Themes
+		locale = cfg.General.Locale
 
 		addrs = cfg.Dbmgo.Addrs
 		database = cfg.Dbmgo.Database
@@ -73,7 +80,7 @@ func main() {
 			if sitemaplink.Site == site {
 
 				doc := new(domains.Page)
-				doc.Loc ="http://"+site+"/"+mainroute+"/"+ sitemaplink.Stitle+".html"
+				doc.Loc = "http://" + site + "/" + themes + "/" + locale + "/" + mainroute + "/" + sitemaplink.Stitle + ".html"
 				doc.Lastmod = sitemaplink.Updated.Format(time.RFC3339)
 				doc.Changefreq = "monthly"
 				docList.Pages = append(docList.Pages, doc)
@@ -82,13 +89,13 @@ func main() {
 
 		}
 
-		resultXml, err := xml.MarshalIndent(docList, "", "  ")
+		resultXML, err := xml.MarshalIndent(docList, "", "  ")
 		if err != nil {
 
 			//		golog.Crit(err.Error())
 			log.Println(err.Error())
 		}
-		ioutil.WriteFile(sitemapsdir+"/sitemap_"+site+".xml", resultXml, 0644)
+		ioutil.WriteFile(sitemapsdir+"/sitemap_"+site+".xml", resultXML, 0644)
 		if err != nil {
 
 			//		golog.Crit(err.Error())

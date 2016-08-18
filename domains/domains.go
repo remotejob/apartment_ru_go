@@ -14,10 +14,10 @@ type Gphrase struct {
 }
 
 type Articlefull struct {
-	ID        bson.ObjectId `bson:"_id,omitempty"`
-	Title     string
-	Stitle    string
-	Tags      string
+	ID     bson.ObjectId `bson:"_id,omitempty"`
+	Title  string
+	Stitle string
+	// Tags      string
 	Contents  string
 	Mcontents string
 	Site      string
@@ -27,9 +27,9 @@ type Articlefull struct {
 }
 
 type Articletotempalte struct {
-	Title     string
-	Stitle    string
-	Tags      string
+	Title  string
+	Stitle string
+	// Tags      string
 	Contents  string
 	Mcontents string
 	Site      string
@@ -39,8 +39,8 @@ type Articletotempalte struct {
 }
 
 type Article struct {
-	Title     string
-	Tags      string
+	Title string
+	// Tags      string
 	Contents  string
 	Mcontents string
 	Author    string
@@ -53,9 +53,7 @@ type Sitemap_from_db struct {
 }
 
 type ServerConfig struct {
-
 	General struct {
-
 		Themes string
 		Locale string
 	}
@@ -154,23 +152,23 @@ type Page struct {
 	//	Image      string   `xml:"image:image>image:loc"`
 }
 
-type Config struct {
-	Maintitle string
-	Subtitle  string
-	Cv        []struct {
-		Name string
-		Path string
-		Img  string
-		Item []struct {
-			Title    string
-			Rank     int
-			Duration int
-			Link     string
-			Extra    string
-			Img      string
-		}
-	}
-}
+// type Config struct {
+// 	Maintitle string
+// 	Subtitle  string
+// 	Cv        []struct {
+// 		Name string
+// 		Path string
+// 		Img  string
+// 		Item []struct {
+// 			Title    string
+// 			Rank     int
+// 			Duration int
+// 			Link     string
+// 			Extra    string
+// 			Img      string
+// 		}
+// 	}
+// }
 
 type Job struct {
 	Maintitle string

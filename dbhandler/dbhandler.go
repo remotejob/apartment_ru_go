@@ -5,7 +5,6 @@ import (
 	"log"
 
 	"github.com/remotejob/apartment_ru_go/domains"
-	"github.com/remotejob/apartment_ru_go/entryHandler"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -15,7 +14,7 @@ func GetAllForStatic(session mgo.Session) []domains.Articlefull {
 
 	session.SetMode(mgo.Monotonic, true)
 
-	c := session.DB("jbs_generator").C("jbs_generator")
+	c := session.DB("blog").C("articles")
 	var results []domains.Articlefull
 	err := c.Find(nil).All(&results)
 	if err != nil {
@@ -51,7 +50,7 @@ func GetAllSitemaplinks(session mgo.Session) []domains.Sitemap_from_db {
 
 	session.SetMode(mgo.Monotonic, true)
 
-	c := session.DB("jbs_generator").C("jbs_generator")
+	c := session.DB("blog").C("articles")
 	var results []domains.Sitemap_from_db
 	err := c.Find(nil).Select(bson.M{"stitle": 1, "site": 1, "updated": 1}).All(&results)
 	if err != nil {
@@ -79,14 +78,14 @@ func GetAllUseful(session mgo.Session, themes string, locale string) []domains.G
 	return results
 }
 
-func InsetArticle(session mgo.Session, article entryHandler.Article) {
-	session.SetMode(mgo.Monotonic, true)
+// func InsetArticle(session mgo.Session, article entryHandler.Article) {
+// 	session.SetMode(mgo.Monotonic, true)
 
-	c := session.DB("jbs_generator").C("jbs_generator")
+// 	c := session.DB("blog").C("articles")
 
-	err := c.Insert(article)
-	if err != nil {
-		log.Fatal(err)
-	}
+// 	err := c.Insert(article)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
 
-}
+// }

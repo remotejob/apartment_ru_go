@@ -138,7 +138,7 @@ func main() {
 		// newArticle.AddTags(bestKeywords)
 		// newArticle.AddContents(sentences)
 		newArticle.AddAuthor()
-		// newArticle.InsertIntoDB(*dbsession)
+		newArticle.InsertIntoDB(*dbsession)
 		fmt.Println(newArticle.Modarticle.Author)
 		fmt.Println(newArticle.Modarticle.Site)
 		fmt.Println(newArticle.Modarticle.Title)

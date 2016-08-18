@@ -59,7 +59,7 @@ func Create(allarticles []domains.Articlefull, pwd string, site string) {
 
 		}
 
-		if c > 500 {
+		if c > 100 {
 
 			break
 		}
